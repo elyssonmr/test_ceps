@@ -1,19 +1,19 @@
-import pandas as pd
 import asyncio
 from datetime import datetime
 
-from cep_processor.queue_processor import QueueProcessor
-from cep_processor.http_client import CepHttpClient
-from cep_processor.exporter import Exporter
+import pandas as pd
+
 from cep_processor.database import Database
+from cep_processor.exporter import Exporter
+from cep_processor.http_client import CepHttpClient
+from cep_processor.queue_processor import QueueProcessor
 
 
 async def main():
     before = datetime.now()
-    client = CepHttpClient()
+    client = CepHttpClient(30)
     request_processos = QueueProcessor(
-        consumer_count=50,
-        consumer_function=client.request_cep_api
+        consumer_count=30, consumer_function=client.request_cep_api
     )
     ceps = pd.read_csv('ceps.csv')
     print('Starting Processing CEP Data')
@@ -38,14 +38,13 @@ async def main():
 
     # Save to a database
     print('Saving to database')
-    
+
     db = Database()
     # Ensure tables are created
     await db.create_tables()
 
     db_processor = QueueProcessor(
-        consumer_count=25,
-        consumer_function=db.save_cep
+        consumer_count=25, consumer_function=db.save_cep
     )
 
     async with db_processor:
@@ -57,9 +56,11 @@ async def main():
         print('CEPS Saved at the database')
 
     await db.close()
+
     after = datetime.now()
     print(f'Processing time: {after - before}')
     print('Finished!')
+
 
 if __name__ == '__main__':
     asyncio.run(main())
