@@ -32,6 +32,14 @@ class QueueProcessor:
         await self._queue.join()
         print('Processing finished')
 
+    @property
+    def results(self):
+        return self._results
+
+    @property
+    def size(self):
+        return self._queue.qsize()
+
     async def __aenter__(self):
         print('Adding Consumers')
         for i in range(self._consumer_count):

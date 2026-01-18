@@ -32,7 +32,8 @@ class CepHttpClient():
             print('Ops... Exception')
             print(f'Exception: {type(ex)} Error: {str(ex)}')
             return {
-                'result': f'Exception: {type(ex)} Error: {str(ex)}'
+                'result': f'Exception: {type(ex)} Error: {str(ex)}',
+                'success': False
             }
 
 

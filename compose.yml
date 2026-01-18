@@ -1,0 +1,15 @@
+services:
+  ceps_db:
+    image: 'postgres:alpine'
+    container_name: 'ceps_db'
+    ports:
+      - '5432:5432'
+    environment:
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_DB=ceps'
+      - 'POSTGRES_PASSWORD=db_passwd'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
