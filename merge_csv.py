@@ -1,12 +1,19 @@
-import pandas as pd
 import glob
 import os
 
+import pandas as pd
 
 print('Concatenando Ceps')
 csv_path = 'datasource_ceps'
-all_files = glob.glob(os.path.join(csv_path, "*.csv"))
-column_names = ['CEP', 'logradouro', 'logradouro2', 'bairro', 'id_cidade', 'id_estado']
+all_files = glob.glob(os.path.join(csv_path, '*.csv'))
+column_names = [
+    'CEP',
+    'logradouro',
+    'logradouro2',
+    'bairro',
+    'id_cidade',
+    'id_estado',
+]
 ceps_data = []
 
 for filename in all_files:

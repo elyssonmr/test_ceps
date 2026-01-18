@@ -43,9 +43,7 @@ class QueueProcessor:
     async def __aenter__(self):
         print('Adding Consumers')
         for i in range(self._consumer_count):
-            self._consumers.append(asyncio.create_task(
-                self._consume()
-            ))
+            self._consumers.append(asyncio.create_task(self._consume()))
 
     async def __aexit__(self, exc_type, exc, tb):
         for consumer in self._consumers:

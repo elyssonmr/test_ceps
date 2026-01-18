@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 COLUMNS = [
     'cep',
     'logradouro',
@@ -14,11 +13,11 @@ COLUMNS = [
     'ibge',
     'gia',
     'ddd',
-    'siafi'
+    'siafi',
 ]
 
 
-class Exporter():
+class Exporter:
     def __init__(self):
         self._success_items = []
         self._error_items = []

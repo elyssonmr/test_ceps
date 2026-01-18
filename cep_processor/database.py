@@ -1,8 +1,9 @@
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import Mapped, mapped_column, registry, relationship
 from sqlalchemy import String
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import Mapped, mapped_column, registry
 
 table_registry = registry()
+
 
 @table_registry.mapped_as_dataclass
 class Cep:
@@ -17,12 +18,11 @@ class Cep:
     localidade: Mapped[str | None] = mapped_column(String(150))
     uf: Mapped[str | None] = mapped_column(String(2))
     estado: Mapped[str | None] = mapped_column(String(150))
-    região: Mapped[str | None] = mapped_column(String(150))
+    regiao: Mapped[str | None] = mapped_column(String(150))
     ibge: Mapped[str | None] = mapped_column(String(20))
     gia: Mapped[str | None] = mapped_column(String(20))
     ddd: Mapped[str | None] = mapped_column(String(2))
     siafi: Mapped[str | None] = mapped_column(String(20))
-
 
 
 class Database:
@@ -30,7 +30,7 @@ class Database:
         self._engine = create_async_engine(
             'postgresql+psycopg://postgres:db_passwd@localhost:5432/ceps',
             pool_size=20,
-            max_overflow=5
+            max_overflow=5,
         )
 
     async def create_tables(self):
@@ -51,18 +51,18 @@ class Database:
                     localidade=cep_data['localidade'],
                     uf=cep_data['uf'],
                     estado=cep_data['estado'],
-                    região=cep_data['regiao'],
+                    regiao=cep_data['regiao'],
                     ibge=cep_data['ibge'],
                     gia=cep_data['gia'],
                     ddd=cep_data['ddd'],
-                    siafi=cep_data['siafi']
+                    siafi=cep_data['siafi'],
                 )
                 session.add(cep)
                 await session.commit()
                 await session.refresh(cep)
             except Exception as ex:
-                print('Ops... Can\'t save registry into the database')
-                print(ex)
+                print("Ops... Can't save registry into the database")
+                print(f'Exception type {type(ex)} Error: {ex}')
 
     async def close(self):
         await self._engine.dispose()
